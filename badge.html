@@ -676,7 +676,7 @@ img { max-width: 100%; }
     var pk = typeof o.p === "string" && /^[a-z-]{2,30}$/.test(o.p) && window.PHOTOS && hasProp(window.PHOTOS, o.p) ? o.p : null;
     var a = num(o.a, 1, 99), no = num(o.no, 0, 99999);
     // Kategori adı: yaş varsa kiosktaki yaş seviyesine göre (js/config.js > LEVELS), yoksa eski gruba göre
-    var gl = a ? (a <= 8 ? "7–8 yaş" : a <= 10 ? "9–10 yaş" : a <= 13 ? "11–13 yaş" : "14 yaş ve üstü") : (g ? GROUPS[g] : null);
+    var gl = a ? (a <= 8 ? "7⁠–⁠8 yaş" : a <= 10 ? "9⁠–⁠10 yaş" : a <= 13 ? "11⁠–⁠13 yaş" : "14 yaş ve üstü") : (g ? GROUPS[g] : null); // bölünmesin
     return { n: n, s: s, c: c, q: q, t: t, i: cleanEmoji(o.i), g: g, gl: gl, d: parseDate(o.d), p: pk, a: a, no: no };
   }
 
