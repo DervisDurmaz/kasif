@@ -353,6 +353,8 @@ img { max-width: 100%; }
 .sh-x { background: #111; border: 1px solid rgba(255, 255, 255, .25); }
 .sh-more { background: rgba(253, 248, 239, .14); border: 1px solid rgba(253, 248, 239, .3); }
 .sh-copy { margin-top: 12px; }
+.sp-fact { max-width: 26rem; margin: 16px auto 0; padding: 12px 16px; border-radius: 14px; background: rgba(242, 193, 78, .1); border: 1px solid rgba(242, 193, 78, .38); color: #fdf8ef; font-size: .95rem; line-height: 1.45; }
+.sp-fact b { color: #ffe29a; }
 /* Kâşif Kartı */
 .kcard { position: relative; width: min(100%, 26rem); margin: 0 auto; aspect-ratio: 1080 / 1512; border-radius: 4.2% / 3%;
   filter: drop-shadow(0 1rem 1.8rem rgba(0, 0, 0, .55)); }
@@ -398,6 +400,7 @@ img { max-width: 100%; }
             <canvas id="kcard-view" width="1080" height="1512" role="img" aria-label="Kâşif kartı"></canvas>
             <i class="kcard-sheen" aria-hidden="true"></i>
           </div>
+          <p class="sp-fact" id="sp-fact" hidden></p>
 
           <div class="actions">
             <button type="button" class="btn" id="save-badge">
@@ -493,6 +496,34 @@ img { max-width: 100%; }
             </button>
             <p class="status" id="st-cert" role="status" aria-live="polite"></p>
           </div>
+
+          <div class="share" id="share-c">
+            <p class="share-h">Belgeni paylaş</p>
+            <div class="share-row">
+              <button type="button" class="sh sh-ig" id="sh-ig-c" aria-label="Instagram'da paylaş">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+                <span>Instagram</span>
+              </button>
+              <a class="sh sh-wa" id="sh-wa-c" href="#" target="_blank" rel="noopener" aria-label="WhatsApp'ta paylaş">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.3 18.4z"/><path d="M9.2 8.6c.3 2.7 2.4 4.9 5.2 5.4l1-1.2-1.8-.9-.8.8c-1-.4-1.9-1.3-2.4-2.3l.8-.8-.8-1.8z" fill="currentColor" stroke="none"/></svg>
+                <span>WhatsApp</span>
+              </a>
+              <a class="sh sh-fb" id="sh-fb-c" href="#" target="_blank" rel="noopener" aria-label="Facebook'ta paylaş">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.2h2.4l.4-2.9h-2.8V9.1c0-.8.3-1.4 1.4-1.4h1.5V5.1c-.3 0-1.2-.1-2.2-.1-2.2 0-3.6 1.3-3.6 3.7v2.2H8.1v2.9h2.5V21z"/></svg>
+                <span>Facebook</span>
+              </a>
+              <a class="sh sh-x" id="sh-x-c" href="#" target="_blank" rel="noopener" aria-label="X'te paylaş">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 3h3l-6.6 7.6L21.8 21h-6.1l-4.8-6.2L5.4 21h-3l7.1-8.1L2 3h6.2l4.3 5.7zm-1 16.2h1.7L7.5 4.7H5.7z"/></svg>
+                <span>X</span>
+              </a>
+              <button type="button" class="sh sh-more" id="sh-more-c" aria-label="Diğer uygulamalarla paylaş">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg>
+                <span>Diğer</span>
+              </button>
+            </div>
+            <button type="button" class="btn-2 sh-copy" id="sh-copy-c">Bağlantıyı kopyala</button>
+            <p class="status" id="st-share-c" role="status" aria-live="polite"></p>
+          </div>
           <figure class="preview cert-pv" id="pv-cert" hidden>
             <img alt="">
             <figcaption>Kaydedemediyseniz görsele basılı tutup ‘Resmi kaydet’i seçin.</figcaption>
@@ -549,6 +580,7 @@ img { max-width: 100%; }
 
 <script src="js/photos.js"></script>
 <script src="js/keyboard.js"></script>
+<script src="js/endemics.js"></script>
 <script src="js/card.js"></script>
 <script>
 (function () {
@@ -714,6 +746,14 @@ img { max-width: 100%; }
     $("#kcard-wrap").className = "kcard tier-" + window.KasifCard.tierFor(D.c, D.q);
     window.KasifCard.draw($("#kcard-view"), cardData(D));
     setShareLinks();
+    // Endemik tür bilgisi
+    var sp = null, E = window.ENDEMICS || [];
+    for (var k = 0; k < E.length; k++) if (E[k].key === D.p) { sp = E[k]; break; }
+    var fe = $("#sp-fact"); clear(fe); fe.hidden = !sp;
+    if (sp) {
+      var b = document.createElement("b"); b.textContent = "🌿 " + sp.name + ": ";
+      fe.appendChild(b); fe.appendChild(document.createTextNode(sp.fact + " Bu tür dünyada yalnızca Türkiye'de yaşar."));
+    }
 
     // belge
     setText("#c-name", D.n);
@@ -1219,8 +1259,14 @@ img { max-width: 100%; }
       D.c + "/" + D.q + " doğru, " + D.s + " puan 🌾 " + TAGS;
   }
   function openUrl(el, url) { el.href = url; }
+  function certText() {
+    return "TEKNOFEST Güneydoğu 2026'da T.C. Tarım ve Orman Bakanlığı TAGEM standındaki Tarım & Doğa Kâşifi bilgi yarışmasına katıldım, katılım belgemi aldım! 🌾 " + TAGS;
+  }
   function setShareLinks() {
-    var url = location.href, text = shareText();
+    var url = location.href, text = shareText(), ct = certText();
+    openUrl($("#sh-wa-c"), "https://wa.me/?text=" + encodeURIComponent(ct + "\n" + url));
+    openUrl($("#sh-fb-c"), "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url) + "&quote=" + encodeURIComponent(ct));
+    openUrl($("#sh-x-c"), "https://twitter.com/intent/tweet?text=" + encodeURIComponent(ct) + "&url=" + encodeURIComponent(url));
     openUrl($("#sh-wa"), "https://wa.me/?text=" + encodeURIComponent(text + "\n" + url));
     openUrl($("#sh-fb"), "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url) + "&quote=" + encodeURIComponent(text));
     openUrl($("#sh-x"), "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url));
@@ -1290,9 +1336,27 @@ img { max-width: 100%; }
     };
     if (ready.badge) go(ready.badge); else build("badge").then(go, function () { go(null); });
   }
-  function onCopy() {
-    var url = location.href;
-    var ok = function () { shareStatus("Bağlantı kopyalandı."); };
+  // Katılım belgesi: resim dosyasını telefonun paylaş menüsüyle gönder (Instagram gönderi, WhatsApp vb.)
+  function certStatus(msg, isErr) { var st = $("#st-share-c"); st.textContent = msg; st.classList.toggle("err", !!isErr); }
+  function onCertShare(isInstagram) {
+    var go = function (r) {
+      var f = fileOf(r);
+      if (canShareFile(f)) {
+        navigator.share({ files: [f], text: certText() }).then(function () { certStatus(""); }, function () {});
+        if (isInstagram) certStatus("Açılan menüden Instagram'ı seçin.");
+      } else if (isInstagram) {
+        download(r);
+        certStatus("Belge kaydedildi. Instagram'ı açıp Gönderi > Galeri'den bu görseli seçerek paylaşabilirsiniz.");
+      } else if (navigator.share) {
+        navigator.share({ title: "Katılım Belgem", text: certText(), url: location.href }).catch(function () {});
+      } else { download(r); certStatus("Belge kaydedildi."); }
+    };
+    if (ready.cert) go(ready.cert);
+    else { certStatus("Belge hazırlanıyor…"); build("cert").then(function (r) { certStatus(""); go(r); }, function () { certStatus("Belge hazırlanamadı. Sayfayı yenileyip yeniden deneyin.", true); }); }
+  }
+  function onCopy(e) {
+    var url = location.href, isCert = e && e.currentTarget && e.currentTarget.id === "sh-copy-c";
+    var ok = function () { (isCert ? certStatus : shareStatus)("Bağlantı kopyalandı."); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, function () { prompt("Bağlantıyı kopyalayın:", url); });
     else prompt("Bağlantıyı kopyalayın:", url);
   }
@@ -1322,6 +1386,9 @@ img { max-width: 100%; }
   document.getElementById("sh-ig").addEventListener("click", onInstagram);
   document.getElementById("sh-more").addEventListener("click", onMore);
   document.getElementById("sh-copy").addEventListener("click", onCopy);
+  document.getElementById("sh-ig-c").addEventListener("click", function () { onCertShare(true); });
+  document.getElementById("sh-more-c").addEventListener("click", function () { onCertShare(false); });
+  document.getElementById("sh-copy-c").addEventListener("click", onCopy);
   window.addEventListener("hashchange", init);
   init();
 })();

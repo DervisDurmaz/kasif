@@ -90,6 +90,10 @@
   function draw(canvas, data) {
     var base = data.base || "";
     var P = (window.PHOTOS && window.PHOTOS[data.photoKey]) || null;
+    // "Türkiye'nin Endemik Türleri" serisi: js/endemics.js
+    var E = window.ENDEMICS || [], ei = -1;
+    for (var k = 0; k < E.length; k++) if (E[k].key === data.photoKey) { ei = k; break; }
+    var sp = ei >= 0 ? E[ei] : null;
     var tier = TIERS[tierFor(data.correct, data.total)];
     return Promise.all([
       fonts(),
@@ -132,16 +136,30 @@
       var px = 72, py = 140, pw = W - 144, ph = 640;
       c.save(); rr(c, px, py, pw, ph, 30); c.clip();
       if (photo) cover(c, photo, px, py, pw, ph); else { c.fillStyle = "#1d3a7a"; c.fillRect(px, py, pw, ph); }
-      var fade = c.createLinearGradient(0, py + ph - 220, 0, py + ph);
-      fade.addColorStop(0, "rgba(7,16,41,0)"); fade.addColorStop(1, "rgba(7,16,41,.88)");
-      c.fillStyle = fade; c.fillRect(px, py + ph - 220, pw, 220);
+      var fade = c.createLinearGradient(0, py + ph - 260, 0, py + ph);
+      fade.addColorStop(0, "rgba(7,16,41,0)"); fade.addColorStop(1, "rgba(7,16,41,.9)");
+      c.fillStyle = fade; c.fillRect(px, py + ph - 260, pw, 260);
       c.restore();
       rr(c, px, py, pw, ph, 30); c.lineWidth = 8; c.strokeStyle = metal(c, tier.stops, px, py, px + pw, py + ph); c.stroke();
-      if (P) {
+      if (sp) {
+        // ENDEMİK etiketi + seri numarası
+        var tag = "ENDEMİK · " + (ei + 1) + "/" + E.length;
+        c.font = "800 26px " + HEAD; var tw = c.measureText(tag).width + 44;
+        rr(c, px + 26, py + 26, tw, 52, 26); c.fillStyle = "rgba(7,16,41,.78)"; c.fill();
+        c.lineWidth = 3; c.strokeStyle = tier.accent; c.stroke();
+        c.fillStyle = tier.text; c.fillText(tag, px + 48, py + 53);
+        c.fillStyle = "#fdf8ef"; fit(c, sp.name, "800", 56, 32, HEAD, pw - 90);
+        c.fillText(sp.name, px + 44, py + ph - 118);
+        c.fillStyle = "rgba(253,248,239,.82)"; fit(c, sp.latin, "italic 500", 30, 20, BODY, pw - 90);
+        c.fillText(sp.latin, px + 46, py + ph - 74);
+        c.fillStyle = tier.text; c.font = "800 28px " + BODY; c.fillText(sp.region, px + 46, py + ph - 34);
+      } else if (P) {
         c.fillStyle = "#fdf8ef"; fit(c, P.title, "800", 58, 34, HEAD, pw - 90);
         c.fillText(P.title, px + 44, py + ph - 88);
         var place = PLACES[data.photoKey];
         if (place) { c.fillStyle = tier.text; c.font = "800 30px " + BODY; c.fillText(place, px + 46, py + ph - 38); }
+      }
+      if (P) {
         c.fillStyle = "rgba(253,248,239,.55)"; c.font = "500 19px " + BODY; c.textAlign = "right";
         var lic = /public domain/i.test(P.lic) ? "Kamu malı" : P.lic;
         var cred = "Foto: " + P.by + " · " + lic + " · Wikimedia Commons";
@@ -187,5 +205,15 @@
     });
   }
 
-  window.KasifCard = { draw: draw, tierFor: tierFor, pickPhoto: pickPhoto, TIERS: TIERS, W: W, H: H };
+  // Endemik seri: günün tarihine göre karıştırılmış sırada, n. kart n. türü alır (art arda aynı tür gelmez)
+  function endemicFor(no, dateKey) {
+    var E = (window.ENDEMICS || []).filter(function (e) { return window.PHOTOS && window.PHOTOS[e.key]; });
+    if (!E.length) return null;
+    var seed = 0; String(dateKey || "").split("").forEach(function (ch) { seed = (seed * 31 + ch.charCodeAt(0)) >>> 0; });
+    var order = E.map(function (_, i) { return i; });
+    for (var i = order.length - 1; i > 0; i--) { seed = (seed * 1103515245 + 12345) >>> 0; var j = seed % (i + 1); var t = order[i]; order[i] = order[j]; order[j] = t; }
+    return E[order[Math.max(0, (no || 1) - 1) % E.length]].key;
+  }
+
+  window.KasifCard = { draw: draw, tierFor: tierFor, pickPhoto: pickPhoto, endemicFor: endemicFor, TIERS: TIERS, W: W, H: H };
 })();

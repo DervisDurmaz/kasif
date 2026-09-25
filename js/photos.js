@@ -361,5 +361,149 @@ window.PHOTOS = {
   "lic": "CC BY-SA 2.0",
   "licUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
   "url": "https://commons.wikimedia.org/wiki/File:Four_bean_varieties_in_a_gene_bank.jpg"
+ },
+ "e-yanardoner": {
+  "src": "assets/photos/e-yanardoner.jpg",
+  "title": "Yanardöner",
+  "by": "Nevit Dilmen",
+  "lic": "CC BY-SA 3.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Centaurea_tchihatcheffii_yanardoner_sevgi_05668.jpg"
+ },
+ "e-kasnak-mesesi": {
+  "src": "assets/photos/e-kasnak-mesesi.jpg",
+  "title": "Kasnak Meşesi",
+  "by": "Bournabat",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:DSCF9888ed_quercus_vulcanica.jpg"
+ },
+ "e-kazdagi-goknari": {
+  "src": "assets/photos/e-kazdagi-goknari.jpg",
+  "title": "Kazdağı Göknarı",
+  "by": "Volker Höhfeld",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Kazda%C4%9F%C4%B1_09_2005_TanneTroiani_2.jpg"
+ },
+ "e-seytankabalagi": {
+  "src": "assets/photos/e-seytankabalagi.jpg",
+  "title": "Şeytankabalağı",
+  "by": "Meneerke bloem",
+  "lic": "CC BY-SA 3.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Cyclamen_cilicium_flower2.jpg"
+ },
+ "e-kirpikli-zambak": {
+  "src": "assets/photos/e-kirpikli-zambak.jpg",
+  "title": "Kirpikli Zambak",
+  "by": "Ernst Gügel",
+  "lic": "CC BY-SA 3.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Lil_ciliatum_01Infl_Tuerkei_K%C3%BCmbet_85.jpg"
+ },
+ "e-morsigirkuyrugu": {
+  "src": "assets/photos/e-morsigirkuyrugu.jpg",
+  "title": "Morsığırkuyruğu",
+  "by": "Gerhardpils",
+  "lic": "CC BY-SA 3.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Verbascum_wiedemannianum.jpg"
+ },
+ "e-buyukmercan": {
+  "src": "assets/photos/e-buyukmercan.jpg",
+  "title": "Büyükmercan",
+  "by": "Emőke Dénes",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Lamiales_-_Origanum_amanum_-_2.jpg"
+ },
+ "e-kartaldagi-cigdemi": {
+  "src": "assets/photos/e-kartaldagi-cigdemi.jpg",
+  "title": "Kartal Dağı Çiğdemi",
+  "by": "Zeynel Cebeci",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Crocus_kartaldagensis_-_Kartaldag_crocus_05.jpg"
+ },
+ "e-ana-kurtkulagi": {
+  "src": "assets/photos/e-ana-kurtkulagi.jpg",
+  "title": "Ana Kurtkulağı",
+  "by": "Zeynel Cebeci",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:%C4%B0ris_sari_-_Ana_kurtkula%C4%9F%C4%B1_02.jpg"
+ },
+ "e-damalilale": {
+  "src": "assets/photos/e-damalilale.jpg",
+  "title": "Damalı Lale",
+  "by": "Ettrig",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "url": "https://commons.wikimedia.org/wiki/File:Fritillaria_aurea_02.jpg"
+ },
+ "e-incikefali": {
+  "src": "assets/photos/e-incikefali.jpg",
+  "title": "İnci Kefali",
+  "by": "Rotadefterim",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Inci_kefali_3.jpg"
+ },
+ "e-yabankoyunu": {
+  "src": "assets/photos/e-yabankoyunu.jpg",
+  "title": "Anadolu Yaban Koyunu",
+  "by": "Efe2707",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Bozdag.jpg"
+ },
+ "e-harrankeleri": {
+  "src": "assets/photos/e-harrankeleri.jpg",
+  "title": "Harran Yaprakparmaklı Keleri",
+  "by": "Kseniia Marianna Prondzynska",
+  "lic": "CC BY 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Asaccus_barani_116824004.jpg"
+ },
+ "e-likyasemenderi": {
+  "src": "assets/photos/e-likyasemenderi.jpg",
+  "title": "Antalya Likya Semenderi",
+  "by": "Kseniia Marianna Prondzynska",
+  "lic": "CC BY 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Lyciasalamandra_antalyana_181031478.jpg"
+ },
+ "e-seritlisemender": {
+  "src": "assets/photos/e-seritlisemender.jpg",
+  "title": "Anadolu Şeritli Semenderi",
+  "by": "Wouter Beukema",
+  "lic": "CC BY 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Anatolian_Banded_Newt,_Bolu_Merkez_Bolu,_Turkije_imported_from_iNaturalist_photo_351069706.jpg"
+ },
+ "e-saimbeylimavisi": {
+  "src": "assets/photos/e-saimbeylimavisi.jpg",
+  "title": "Saimbeyli Mavisi",
+  "by": "Mehmetcelik80",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Polyommatus_theresiae_(Male)-Saimbeyli_Mavisi.jpg"
+ },
+ "e-tankermavisi": {
+  "src": "assets/photos/e-tankermavisi.jpg",
+  "title": "Tanker'in Çokgözlüsü",
+  "by": "Zeynel Cebeci",
+  "lic": "CC BY-SA 3.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Polyommatus_(Agrodiaetus)_tankeri_01.jpg"
+ },
+ "e-guzelmavi": {
+  "src": "assets/photos/e-guzelmavi.jpg",
+  "title": "Çokgözlü Güzelmavi",
+  "by": "Zeynel Cebeci",
+  "lic": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Polyommatus_guezelmavi_-_Ta%C5%9Fkent_g%C3%BCzelmavisi_01.jpg"
  }
 };
