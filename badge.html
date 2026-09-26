@@ -216,6 +216,10 @@ img { max-width: 100%; }
 .btn:focus-visible, .btn-2:focus-visible { outline: 3px solid var(--wheat-2); outline-offset: 4px; }
 .status { min-height: 1.5em; margin: 10px 0 0; font-size: .9rem; color: var(--muted); text-align: center; }
 .status.err { color: #ffc2c2; font-weight: 800; }
+.ig-open { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 11px 20px; border-radius: 999px;
+           background: linear-gradient(45deg, #f58529, #dd2a7b 55%, #8134af); color: #fff; font-weight: 800; text-decoration: none; }
+.ig-open[hidden] { display: none; }
+.ig-open svg { width: 20px; height: 20px; }
 .preview {
   margin: 12px 0 0; padding: 12px; border-radius: 18px; text-align: center;
   background: rgba(253, 248, 239, .06); border: 1.5px dashed rgba(242, 193, 78, .5);
@@ -436,6 +440,7 @@ img { max-width: 100%; }
             </div>
             <button type="button" class="btn-2 sh-copy" id="sh-copy">Bağlantıyı kopyala</button>
             <p class="status" id="st-share" role="status" aria-live="polite"></p>
+            <a class="ig-open" id="ig-open" href="#" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span>Instagram'ı aç</span></a>
           </div>
           <figure class="preview" id="pv-badge" hidden>
             <img alt="">
@@ -523,6 +528,7 @@ img { max-width: 100%; }
             </div>
             <button type="button" class="btn-2 sh-copy" id="sh-copy-c">Bağlantıyı kopyala</button>
             <p class="status" id="st-share-c" role="status" aria-live="polite"></p>
+            <a class="ig-open" id="ig-open-c" href="#" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span>Instagram'ı aç</span></a>
           </div>
           <figure class="preview cert-pv" id="pv-cert" hidden>
             <img alt="">
@@ -1242,6 +1248,7 @@ img { max-width: 100%; }
     if (story) { try { URL.revokeObjectURL(story.url); } catch (e) { /* yok say */ } }
     story = null; storyP = null;
     gen++;
+    ["ig-open", "ig-open-c"].forEach(function (id) { var b = document.getElementById(id); if (b) b.hidden = true; });
     jobs = {};
     Object.keys(ready).forEach(function (k) { try { URL.revokeObjectURL(ready[k].url); } catch (e) { /* yok say */ } });
     ready = {};
@@ -1314,18 +1321,38 @@ img { max-width: 100%; }
   function canShareFile(f) { return !!(f && navigator.canShare && navigator.share && navigator.canShare({ files: [f] })); }
   function shareStatus(msg, isErr) { var st = $("#st-share"); st.textContent = msg; st.classList.toggle("err", !!isErr); }
 
+  // Instagram uygulamasını doğrudan hikâye kamerasında açar; uygulama yoksa instagram.com
+  function openInstagram(e) {
+    if (e) e.preventDefault();
+    var web = "https://www.instagram.com/";
+    if (/android/i.test(navigator.userAgent)) {
+      location.href = "intent://story-camera#Intent;scheme=instagram;package=com.instagram.android;S.browser_fallback_url=" + encodeURIComponent(web) + ";end";
+      return;
+    }
+    var t = Date.now();
+    location.href = "instagram://story-camera";
+    setTimeout(function () { if (!document.hidden && Date.now() - t < 2600) location.href = web; }, 1800);
+  }
+  // Görseli paylaş menüsüyle gönderir. Yalnız dosya: metin eklenince iPhone'da Instagram listeden düşebiliyor.
+  // Paylaşım dokunuşun içinde çağrılmalı (görsel önceden hazırlanır); olmazsa görsel kaydedilir ve "Instagram'ı aç" gösterilir.
+  function igShare(r, statusFn, igBtn) {
+    igBtn.hidden = false;
+    var f = fileOf(r);
+    if (canShareFile(f)) {
+      statusFn("Açılan menüde Instagram'ı seçin. Listede yoksa önce “Resmi Kaydet”e, sonra aşağıdaki “Instagram'ı aç”a dokunun.");
+      navigator.share({ files: [f] }).then(function () { statusFn("Paylaşıldı, teşekkürler! 🌾"); }, function (err) {
+        if (err && err.name === "NotAllowedError") statusFn("Görsel hazır. Paylaşmak için Instagram düğmesine yeniden dokunun.");
+      });
+    } else {
+      download(r);
+      statusFn("Görsel kaydedildi. Şimdi “Instagram'ı aç”a dokunun ve Hikâye > Galeri'den bu görseli seçin.");
+    }
+  }
   function onInstagram() {
-    var go = function (r) {
-      var f = fileOf(r);
-      if (canShareFile(f)) {
-        navigator.share({ files: [f], text: shareText() }).then(function () { shareStatus(""); }, function () {});
-        shareStatus("Açılan menüden Instagram'ı seçin (Hikâye ya da Gönderi).");
-      } else {
-        download(r);
-        shareStatus("Hikâye görseli kaydedildi. Instagram'ı açıp Hikâye > Galeri'den bu görseli seçerek paylaşabilirsiniz.");
-      }
-    };
-    if (story) go(story); else { shareStatus("Görsel hazırlanıyor…"); prepareStory().then(go, function () { shareStatus("Görsel hazırlanamadı. Sayfayı yenileyip yeniden deneyin.", true); }); }
+    var ig = $("#ig-open");
+    if (story) { igShare(story, shareStatus, ig); return; }
+    shareStatus("Görsel hazırlanıyor…");
+    prepareStory().then(function (r) { igShare(r, shareStatus, ig); }, function () { shareStatus("Görsel hazırlanamadı. Sayfayı yenileyip yeniden deneyin.", true); });
   }
   function onMore() {
     var go = function (r) {
@@ -1340,6 +1367,7 @@ img { max-width: 100%; }
   function certStatus(msg, isErr) { var st = $("#st-share-c"); st.textContent = msg; st.classList.toggle("err", !!isErr); }
   function onCertShare(isInstagram) {
     var go = function (r) {
+      if (isInstagram) { igShare(r, certStatus, $("#ig-open-c")); return; }
       var f = fileOf(r);
       if (canShareFile(f)) {
         navigator.share({ files: [f], text: certText() }).then(function () { certStatus(""); }, function () {});
@@ -1376,7 +1404,9 @@ img { max-width: 100%; }
     assets().then(function () {
       idle(function () {
         if (my !== gen) return;
-        build("badge").then(function () { idle(function () { if (my === gen) { build("cert").catch(function () {}); prepareStory().catch(function () {}); } }); }, function () {});
+        build("badge").then(function () {
+          idle(function () { if (my === gen) prepareStory().then(null, function () {}).then(function () { if (my === gen) build("cert").catch(function () {}); }); });
+        }, function () {});
       });
     });
   }
@@ -1389,6 +1419,8 @@ img { max-width: 100%; }
   document.getElementById("sh-ig-c").addEventListener("click", function () { onCertShare(true); });
   document.getElementById("sh-more-c").addEventListener("click", function () { onCertShare(false); });
   document.getElementById("sh-copy-c").addEventListener("click", onCopy);
+  document.getElementById("ig-open").addEventListener("click", openInstagram);
+  document.getElementById("ig-open-c").addEventListener("click", openInstagram);
   window.addEventListener("hashchange", init);
   init();
 })();
